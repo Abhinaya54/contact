@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -8,227 +8,150 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 </head>
 <body>
-
-  <!-- background blobs -->
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
 
   <div class="app-wrapper">
+    <header class="top-header"></header>
 
-    <!-- ── HEADER ─────────────────────────────────────────── -->
-    <header class="top-header">
-      <div class="header-left">
-        <span class="logo-icon">◈</span>
-        <span class="logo-text">ConnectSphere<strong>Pro</strong></span>
-      </div>
-      <div class="header-right">
-        <div class="clock-box">
-          <span id="clockDate"></span>
-          <span id="clockTime"></span>
+    <main class="content">
+      <section class="page active">
+        <div class="page-header">
+          <h2 class="page-title">Contact Manager</h2>
         </div>
-      </div>
-    </header>
 
-    <div class="main-layout">
+        {% if message %}
+        <div class="toast-message">{{ message }}</div>
+        {% endif %}
 
-      <!-- ── SIDEBAR ─────────────────────────────────────── -->
-      <aside class="sidebar">
-        <nav>
-          <a href="#" class="nav-link active" data-section="dashboard" onclick="showSection('dashboard')">
-            <span>▦</span> Dashboard
-          </a>
-          <a href="#" class="nav-link" data-section="add" onclick="openAddModal()">
-            <span>⊕</span> Add Contact
-          </a>
-          <a href="#" class="nav-link" data-section="directory" onclick="showSection('directory')">
-            <span>⊞</span> Directory
-          </a>
-        </nav>
-      </aside>
-
-      <!-- ── CONTENT ─────────────────────────────────────── -->
-      <main class="content">
-
-        <!-- DASHBOARD -->
-        <section id="section-dashboard" class="page active">
-          <h2 class="page-title">Dashboard</h2>
-          <p class="page-sub">Overview of your contacts.</p>
-          <div class="page-actions">
-            <button class="btn-primary" onclick="openAddModal()">⊕ Add Contact</button>
-          </div>
-
-          <div class="stats-row">
-            <div class="stat-card">
-              <div class="stat-icon cyan">◈</div>
-              <div>
-                <div class="stat-num" id="totalCount">0</div>
-                <div class="stat-label">Total Contacts</div>
+        {% if edit %}
+        <div class="form-card glass">
+          <h3>Edit Contact {{ edit.contact_id }}</h3>
+          <form method="post" action="{{ url_for('edit_contact', contact_id=edit.contact_id) }}{% if q %}?q={{ q }}{% endif %}">
+            <div class="form-row">
+              <div class="field">
+                <label>First Name</label>
+                <input type="text" name="first_name" value="{{ form.first_name|default('') }}" />
+                {% if errors.first_name %}<span class="err">{{ errors.first_name }}</span>{% endif %}
+              </div>
+              <div class="field">
+                <label>Last Name</label>
+                <input type="text" name="last_name" value="{{ form.last_name|default('') }}" />
+                {% if errors.last_name %}<span class="err">{{ errors.last_name }}</span>{% endif %}
               </div>
             </div>
-          </div>
 
-          <div class="recent-box glass">
-            <div class="box-header">
-              <h3>Recent Contacts</h3>
+            <div class="field">
+              <label>Email Address</label>
+              <input type="email" name="email" value="{{ form.email|default('') }}" />
+              {% if errors.email %}<span class="err">{{ errors.email }}</span>{% endif %}
             </div>
-            <div id="recentList">
-              <p class="empty-msg">No contacts yet.</p>
+
+            <div class="field">
+              <label>Phone Number</label>
+              <input type="text" name="phone" value="{{ form.phone|default('') }}" />
+              {% if errors.phone %}<span class="err">{{ errors.phone }}</span>{% endif %}
             </div>
-          </div>
-        </section>
 
-        <!-- DIRECTORY -->
-        <section id="section-directory" class="page">
-          <h2 class="page-title">Contact Directory</h2>
-          <p class="page-sub">All saved contacts.</p>
-
-          <!-- search bar -->
-          <div class="search-bar glass">
-            <span class="search-icon">⌕</span>
-            <input type="text" id="searchInput" placeholder="Search by name, email or phone..." oninput="searchContacts()"/>
-          </div>
-
-          <!-- table -->
-          <div class="table-wrap glass">
-            <table class="ctable">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>Address</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="contactBody"></tbody>
-            </table>
-            <div id="emptyState" class="empty-state" style="display:none">
-              <div class="empty-circle"></div>
-              <p>No contacts found.</p>
-<button class="btn-primary" onclick="openAddModal()">⊕ Add Contact</button>
+            <div class="field">
+              <label>Address</label>
+              <input type="text" name="address" value="{{ form.address|default('') }}" />
+              {% if errors.address %}<span class="err">{{ errors.address }}</span>{% endif %}
             </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">Update Contact</button>
+              <a class="btn-ghost" href="{{ url_for('home', q=q) }}">Cancel</a>
+            </div>
+          </form>
+        </div>
+        {% endif %}
+
+        <div class="form-card glass">
+          <h3>Add Contact</h3>
+          <form method="post" action="{{ url_for('home') }}{% if q %}?q={{ q }}{% endif %}">
+            <div class="form-row">
+              <div class="field">
+                <label>First Name</label>
+                <input type="text" name="first_name" value="{{ form.first_name|default('') }}" />
+                {% if errors.first_name %}<span class="err">{{ errors.first_name }}</span>{% endif %}
+              </div>
+              <div class="field">
+                <label>Last Name</label>
+                <input type="text" name="last_name" value="{{ form.last_name|default('') }}" />
+                {% if errors.last_name %}<span class="err">{{ errors.last_name }}</span>{% endif %}
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Email Address</label>
+              <input type="email" name="email" value="{{ form.email|default('') }}" />
+              {% if errors.email %}<span class="err">{{ errors.email }}</span>{% endif %}
+            </div>
+
+            <div class="field">
+              <label>Phone Number</label>
+              <input type="text" name="phone" value="{{ form.phone|default('') }}" />
+              {% if errors.phone %}<span class="err">{{ errors.phone }}</span>{% endif %}
+            </div>
+
+            <div class="field">
+              <label>Address</label>
+              <input type="text" name="address" value="{{ form.address|default('') }}" />
+              {% if errors.address %}<span class="err">{{ errors.address }}</span>{% endif %}
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">Save Contact</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="table-wrap glass">
+          <h3>Saved Contacts</h3>
+          <div class="search-card search-attached">
+            <form method="get" action="{{ url_for('home') }}" class="search-row">
+              <input type="search" name="q" placeholder="Search by name, email, phone or address..." value="{{ q|default('') }}" />
+              <button type="submit" class="btn-primary btn-small">Search</button>
+              {% if q %}
+              <a class="btn-ghost btn-small" href="{{ url_for('home') }}">Clear</a>
+              {% endif %}
+            </form>
           </div>
-        </section>
-
-      </main>
-    </div>
-  </div>
-
-  <!-- ── ADD CONTACT MODAL ────────────────────────────────── -->
-  <div class="overlay" id="addOverlay">
-    <div class="modal glass">
-      <div class="modal-header">
-        <h3>Add Contact</h3>
-        <button class="close-btn" onclick="closeAddModal()">✕</button>
-      </div>
-
-      <div class="form-row">
-        <div class="field">
-          <label>First Name</label>
-          <input type="text" id="firstName" placeholder="First name"/>
-          <span class="err" id="err-firstName"></span>
+          {% if contacts %}
+          <table class="ctable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for contact in contacts %}
+              <tr>
+                <td>{{ contact.contact_id }}</td>
+                <td>{{ contact.first_name }} {{ contact.last_name }}</td>
+                <td>{{ contact.email }}</td>
+                <td>{{ contact.phone }}</td>
+                <td>{{ contact.address }}</td>
+                <td class="row-actions">
+                  <a class="btn-ghost btn-small" href="{{ url_for('edit_contact', contact_id=contact.contact_id) }}{% if q %}?q={{ q }}{% endif %}">Edit</a>
+                  <form method="post" action="{{ url_for('delete_contact', contact_id=contact.contact_id) }}{% if q %}?q={{ q }}{% endif %}" class="inline-form">
+                    <button type="submit" class="btn-danger btn-small">Delete</button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% endif %}
         </div>
-        <div class="field">
-          <label>Last Name</label>
-          <input type="text" id="lastName" placeholder="Last name"/>
-          <span class="err" id="err-lastName"></span>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>Email Address</label>
-        <input type="text" id="email" placeholder="name@example.com"/>
-        <span class="err" id="err-email"></span>
-      </div>
-
-      <div class="field">
-        <label>Phone Number</label>
-        <input type="text" id="phone" placeholder="+91 9000000000"/>
-        <span class="err" id="err-phone"></span>
-      </div>
-
-      <div class="field">
-        <label>Address</label>
-        <input type="text" id="address" placeholder="City, State, Country"/>
-        <span class="err" id="err-address"></span>
-      </div>
-
-      <div class="form-actions">
-        <button class="btn-primary" onclick="submitContact()">Save Contact</button>
-        <button class="btn-ghost" onclick="closeAddModal()">Cancel</button>
-      </div>
-
-      <div id="addMsg"></div>
-    </div>
+      </section>
+    </main>
   </div>
-
-  <!-- ── EDIT MODAL ──────────────────────────────────────── -->
-  <div class="overlay" id="editOverlay">
-    <div class="modal glass">
-      <div class="modal-header">
-        <h3>Edit Contact</h3>
-        <button class="close-btn" onclick="closeEditModal()">✕</button>
-      </div>
-
-      <input type="hidden" id="editId"/>
-
-      <div class="form-row">
-        <div class="field">
-          <label>First Name</label>
-          <input type="text" id="editFirstName" placeholder="First name"/>
-          <span class="err" id="err-editFirstName"></span>
-        </div>
-        <div class="field">
-          <label>Last Name</label>
-          <input type="text" id="editLastName" placeholder="Last name"/>
-          <span class="err" id="err-editLastName"></span>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>Email Address</label>
-        <input type="text" id="editEmail" placeholder="name@example.com"/>
-        <span class="err" id="err-editEmail"></span>
-      </div>
-
-      <div class="field">
-        <label>Phone Number</label>
-        <input type="text" id="editPhone" placeholder="+91 9000000000"/>
-        <span class="err" id="err-editPhone"></span>
-      </div>
-
-      <div class="field">
-        <label>Address</label>
-        <input type="text" id="editAddress" placeholder="City, State, Country"/>
-        <span class="err" id="err-editAddress"></span>
-      </div>
-
-      <div class="form-actions">
-        <button class="btn-primary" onclick="updateContact()">Update Contact</button>
-        <button class="btn-ghost" onclick="closeEditModal()">Cancel</button>
-      </div>
-
-      <div id="editMsg"></div>
-    </div>
-  </div>
-
-  <!-- ── DELETE CONFIRM ──────────────────────────────────── -->
-  <div class="overlay" id="deleteOverlay">
-    <div class="modal modal-sm glass">
-      <div class="delete-icon">⚠</div>
-      <h3>Delete this contact?</h3>
-      <p id="deleteMsg">This cannot be undone.</p>
-      <div class="form-actions" style="justify-content:center">
-        <button class="btn-ghost" onclick="closeDeleteModal()">Cancel</button>
-        <button class="btn-danger" onclick="confirmDelete()">Yes, Delete</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── TOAST ───────────────────────────────────────────── -->
-  <div id="toastBox"></div>
-
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

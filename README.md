@@ -44,7 +44,7 @@ A modern contact management web application built with Flask and MongoDB. This p
    - Set the `MONGO_URI` to your MongoDB connection string
    - Example:
      ```python
-     MONGO_URI = 'mongodb://localhost:27017/contactdb'
+     MONGO_URI = 'mongodb://localhost:27017/'
      ```
 
 ## Running the App
