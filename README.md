@@ -1,108 +1,98 @@
 # Contact Manager
 
-A modern, responsive web application for managing contacts built with Flask and MongoDB.
+A modern contact management web application built with Flask and MongoDB. This project uses only Flask on the backend and HTML/CSS for the user interface.
 
-## Features
+## Requirements Covered
 
-- **Dashboard**: Overview of total contacts and recent additions
-- **Add Contacts**: Modal-based form for adding new contacts
-- **Contact Directory**: Searchable table of all contacts
-- **Edit/Delete**: Inline editing and deletion with confirmation
-- **Responsive Design**: Works on desktop, tablet, and mobile devices
-- **Real-time Clock**: Live date and time display
+- **CRUD Operations**: Create, Read, Update, Delete contact records
+- **User Interface**: Clean, responsive form and table UI for easy contact management
+- **Data Validation**: Email and phone validation plus duplicate checks
+- **Persistent Storage**: MongoDB for saved contact records
 
 ## Tech Stack
 
 - **Backend**: Flask (Python)
 - **Database**: MongoDB
-- **Frontend**: HTML5, CSS3, JavaScript (ES6)
-- **Styling**: Custom CSS with glassmorphism effects
+- **Frontend**: HTML5, CSS3
+- **Templating**: Jinja2
+- **Styling**: Custom CSS
 
 ## Prerequisites
 
-- Python 3.7+
+- Python 3.7 or newer
 - MongoDB (local installation or MongoDB Atlas)
-- pip (Python package manager)
+- pip
 
 ## Installation
 
-1. **Clone or download the project**:
+1. Clone the repository:
    ```bash
-   cd your-project-directory
+   git clone https://github.com/Abhinaya54/contact.git
+   cd contact
    ```
 
-2. **Install Python dependencies**:
+2. Install dependencies:
    ```bash
    pip install flask pymongo
    ```
 
-3. **Set up MongoDB**:
-   - For local MongoDB: Ensure MongoDB is running on `localhost:27017`
-   - For MongoDB Atlas: Update the connection string in `app.py`
+3. Configure MongoDB:
+   - For local MongoDB: make sure MongoDB is running on `localhost:27017`
+   - For MongoDB Atlas: update the connection string in `app.py`
 
-4. **Configure the database**:
-   - Open `app.py`
-   - Update the `MONGO_URI` variable with your MongoDB connection string
-   - Default: `mongodb://localhost:27017/contactdb`
+4. Update `app.py`:
+   - Set the `MONGO_URI` to your MongoDB connection string
+   - Example:
+     ```python
+     MONGO_URI = 'mongodb://localhost:27017/contactdb'
+     ```
 
-## Running the Application
+## Running the App
 
-1. **Start the Flask server**:
+1. Start the Flask server:
    ```bash
    python app.py
    ```
 
-2. **Open your browser**:
-   - Navigate to `http://localhost:5000`
-   - The Contact Manager dashboard will load
+2. Open the app in your browser:
+   - `http://localhost:5000`
 
 ## Usage
 
-### Adding Contacts
-- Click "Add Contact" from the sidebar or dashboard
-- Fill in the form fields (all fields are required)
-- Click "Save Contact" to add to the database
+### Add a Contact
+- Fill in the contact form with first name, last name, email, phone, and address
+- Click **Save Contact** to add it to the database
 
-### Viewing Contacts
-- Use the "Directory" section to see all contacts
-- Search by name, email, or phone number
+### Search Contacts
+- Use the search box to filter contacts by name, email, phone, or address
+- Click **Search** to view results
+- Click **Clear** to remove the filter
 
-### Editing Contacts
-- Click the "Edit" button next to any contact
-- Modify the information in the modal
-- Click "Update Contact" to save changes
+### Edit a Contact
+- Click **Edit** next to a contact
+- Update the fields in the form
+- Click **Update Contact** to save changes
 
-### Deleting Contacts
-- Click the "Delete" button next to any contact
-- Confirm the deletion in the popup
-
-## API Endpoints
-
-- `GET /api/contacts` - Retrieve all contacts
-- `POST /api/contacts` - Add a new contact
-- `PUT /api/contacts/<id>` - Update an existing contact
-- `DELETE /api/contacts/<id>` - Delete a contact
+### Delete a Contact
+- Click **Delete** next to a contact
+- Confirm the deletion if prompted
 
 ## Project Structure
 
 ```
-contact-manager/
-├── app.py                 # Flask application
+contact/
+├── app.py              # Flask application
 ├── templates/
-│   └── index.html         # Main HTML template
+│   └── index.html      # Main HTML template
 ├── static/
-│   ├── script.js          # Frontend JavaScript
-│   └── style.css          # Stylesheet
-└── README.md             # This file
+│   └── style.css       # CSS styles
+└── README.md           # Project documentation
 ```
 
-## Contributing
+## Notes
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+- This repository is provided as a demo application.
+- Live demo available at: https://full-one-xi.vercel.app/
 
 ## License
 
